@@ -43,13 +43,6 @@ from isaaclab_assets.robots.franka import FRANKA_PANDA_CFG  # isort: skip
 
 @configclass
 class ObjectTableSceneCfg(InteractiveSceneCfg):
-    """Configuration for the lift scene with a robot and a object.
-    This is the abstract base implementation, the exact scene is defined in the derived classes
-    which need to set the target object, robot and end-effector frames
-    """
-    
-    
-    
 
     robot: ArticulationCfg = FRANKA_PANDA_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot",
                                                       init_state = ArticulationCfg.InitialStateCfg(
@@ -66,7 +59,10 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
                                                       )
                                                       )
 
-    """tiled_camera: TiledCameraCfg = TiledCameraCfg(
+    
+    #Depth camera to the side of base
+    
+    tiled_camera: TiledCameraCfg = TiledCameraCfg(
         prim_path = "{ENV_REGEX_NS}/Robot/panda_link0/camera",
         update_period = 0.1,
         width = 320, #1280 #214
@@ -80,7 +76,29 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
         ),
         offset = TiledCameraCfg.OffsetCfg(pos=(1.2, 0.4, 0.55), rot=(-0.269, 0.457, 0.730, -0.429), convention = "ros"),
         debug_vis = True,
+    )
+
+    """
+    #Second camera
+
+    tiled_camera2: TiledCameraCfg = TiledCameraCfg(
+        prim_path = "{ENV_REGEX_NS}/Robot/panda_link0/camera2",
+        update_period = 0.1,
+        width = 320, #1280 #214
+        height = 240, #720 #120
+        data_types=["rgb", "depth"],
+        depth_clipping_behavior = "zero",
+        spawn = sim_utils.PinholeCameraCfg.from_intrinsic_matrix(intrinsic_matrix = [192.384, 0, 158.967, 0, 192.384, 122.075, 0, 0, 1], #641.281, 0, 636.557, 0, 641.281, 366.917, 0, 0, 1
+                                                                 width = 320,
+                                                                 height = 240,
+                                                                 clipping_range = (0.01, 2),
+        ),
+        offset = TiledCameraCfg.OffsetCfg(pos=(0.0, 0.6, 0.4), rot=(0.192, -0.319, 0.794, -0.479), convention = "ros"),
+        debug_vis = True,
     )"""
+
+    """
+    #End effector cam
     
     tiled_camera: TiledCameraCfg = TiledCameraCfg(
         prim_path = "{ENV_REGEX_NS}/Robot/panda_hand/camera",
@@ -95,22 +113,6 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
                                                                  clipping_range = (0.01, 10),
         ),
         offset = TiledCameraCfg.OffsetCfg(pos=(0.12, 0.0, 0.02), rot=(0.7064338, 0.0308436, -0.0308436, -0.7064338), convention = "ros"),
-        debug_vis = True,
-    )
-
-    """tiled_camera2: TiledCameraCfg = TiledCameraCfg(
-        prim_path = "{ENV_REGEX_NS}/Robot/panda_link0/camera2",
-        update_period = 0.1,
-        width = 320, #1280 #214
-        height = 240, #720 #120
-        data_types=["rgb", "depth"],
-        depth_clipping_behavior = "zero",
-        spawn = sim_utils.PinholeCameraCfg.from_intrinsic_matrix(intrinsic_matrix = [192.384, 0, 158.967, 0, 192.384, 122.075, 0, 0, 1], #641.281, 0, 636.557, 0, 641.281, 366.917, 0, 0, 1
-                                                                 width = 320,
-                                                                 height = 240,
-                                                                 clipping_range = (0.01, 2),
-        ),
-        offset = TiledCameraCfg.OffsetCfg(pos=(0.0, 0.6, 0.4), rot=(0.192, -0.319, 0.794, -0.479), convention = "ros"),
         debug_vis = True,
     )"""
 
@@ -130,10 +132,6 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
         filter_prim_paths_expr = ["{ENV_REGEX_NS}/Object"],
     )"""
 
-    #contact_force_right: ContactSensorCfg = ContactSensorCfg(
-    #    prim_path="{ENV_REGEX_NS}/Robot/panda_rightfinger", update_period=0.0, history_length=6, debug_vis=True
-    #)
-
     #marker_cfg = FRAME_MARKER_CFG.copy()
     #marker_cfg.markers["frame"].scale = (0.1, 0.1, 0.1)
     #marker_cfg.prim_path = "/Visuals/FrameTransformer"
@@ -151,25 +149,6 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
                 ),
             ],
         )
-
-    # target object: will be populated by agent env cfg
-    """object: RigidObjectCfg | DeformableObjectCfg = RigidObjectCfg(
-            prim_path="{ENV_REGEX_NS}/Object",
-            init_state=RigidObjectCfg.InitialStateCfg(pos=[0.5, 0, 0.055], rot=[0.70711, 0, 0, 0.7071]),
-            spawn=UsdFileCfg(
-                #usd_path=f"{ISAAC_NUCLEUS_DIR}/Props/Blocks/DexCube/dex_cube_instanceable.usd",
-                usd_path=f"/workspace/isaaclab/source/isaaclab_tasks/isaaclab_tasks/manager_based/rock_grasp/scene_objects/rock_1/rock.usd",
-                scale=(0.8, 0.8, 0.8),
-                rigid_props=RigidBodyPropertiesCfg(
-                    solver_position_iteration_count=16,
-                    solver_velocity_iteration_count=1,
-                    max_angular_velocity=1000.0,
-                    max_linear_velocity=1000.0,
-                    max_depenetration_velocity=5.0,
-                    disable_gravity=False,
-                ),
-            ),
-        )"""
     
     object: RigidObjectCfg | DeformableObjectCfg = RigidObjectCfg(
             prim_path="{ENV_REGEX_NS}/Object",
@@ -196,47 +175,12 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
             ),
         )
 
-    # Table
-    #table = AssetBaseCfg(
-    #    prim_path="{ENV_REGEX_NS}/Table",
-    #    init_state=AssetBaseCfg.InitialStateCfg(pos=[0.5, 0, 0], rot=[0.707, 0, 0, 0.707]),
-    #    spawn=UsdFileCfg(usd_path=f"{ISAAC_NUCLEUS_DIR}/Props/Mounts/SeattleLabTable/table_instanceable.usd"),
-    #)
-
-    # plane
-    #print(self.scene.num_envs)
-    #print("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
     plane = AssetBaseCfg(
         prim_path="/World/GroundPlane",
         init_state=AssetBaseCfg.InitialStateCfg(pos=[0, 0, 0]),
         spawn=GroundPlaneCfg(),
     )
     
-
-    """terrain = TerrainImporterCfg(
-        prim_path= "/World/terrain",
-        terrain_type="generator",
-        num_envs = 4096,
-        env_spacing = 4,
-        debug_vis = False,
-        terrain_generator = TerrainGeneratorCfg(
-        size=(1, 1),
-        num_cols=64,
-        num_rows=64,
-        #horizontal_scale = 0.25,
-        sub_terrains = {
-            "random": HfRandomUniformTerrainCfg(
-                noise_range = [0.0, 0.2],
-                noise_step = 0.005,
-                #downsampled_scale = 0.25
-
-            ),
-        },
-    ),
-        #max_init_terrain_level = 64,
-    )"""
-
-
     # lights
     light = AssetBaseCfg(
         prim_path="/World/light",
@@ -253,7 +197,7 @@ class CommandsCfg:
 
     object_pose = mdp.UniformPoseCommandCfg(
         asset_name="robot",
-        body_name="panda_hand",  # will be set by agent env cfg
+        body_name="panda_hand",
         resampling_time_range=(5.0, 5.0),
         debug_vis=False,
         ranges=mdp.UniformPoseCommandCfg.Ranges(
@@ -266,7 +210,6 @@ class CommandsCfg:
 class ActionsCfg:
     """Action specifications for the MDP."""
 
-    # will be set by agent env cfg
     arm_action: mdp.JointPositionActionCfg | mdp.DifferentialInverseKinematicsActionCfg = mdp.JointPositionActionCfg(
             asset_name="robot", joint_names=["panda_joint.*"], scale=0.5, use_default_offset=True
         )
@@ -288,7 +231,7 @@ class ObservationsCfg:
 
         depth_img = ObsTerm(func=mdp.image, params={"data_type": "depth"})
         #depth_img2 = ObsTerm(func=mdp.image, params={"sensor_cfg": SceneEntityCfg('tiled_camera2'), "data_type": "depth"})
-        rgb_img = ObsTerm(func=mdp.image, params={"data_type": "rgb", "normalize": False})
+        #rgb_img = ObsTerm(func=mdp.image, params={"data_type": "rgb", "normalize": False})
         #rgb_img2 = ObsTerm(func=mdp.image, params={"sensor_cfg": SceneEntityCfg('tiled_camera2'), "data_type": "rgb"})
         joint_pos = ObsTerm(func=mdp.joint_pos_rel)
         joint_vel = ObsTerm(func=mdp.joint_vel_rel)
@@ -331,12 +274,6 @@ class RewardsCfg:
 
     lifting_object = RewTerm(func=mdp.object_is_lifted, params={"minimal_height": 0.04}, weight=100.0)
 
-    """object_goal_tracking = RewTerm(
-        func=mdp.object_goal_distance,
-        params={"std": 0.3, "minimal_height": 0.04, "command_name": "object_pose"},
-        weight=25.0,
-    )"""
-
     ee_ori = RewTerm(func=mdp.ee_orientation, weight = 1)  #Reward ee poitning downwards
 
     ee_open_dist = RewTerm(func=mdp.gripper_open_when_far, weight = 1) #Reward for open until within 2 cm of rock
@@ -345,24 +282,7 @@ class RewardsCfg:
 
     ee_close_dist = RewTerm(func=mdp.gripper_closure_near_object, weight = 20) #reward closing gripper when withing 2 cm of rock
 
-    
-    """reaching_object = RewTerm(func=mdp.object_ee_distance, params={"std": 0.1}, weight=1.0)
-
-    lifting_object = RewTerm(func=mdp.object_is_lifted, params={"minimal_height": 0.04}, weight=15.0)"""
-
     object_height_tracking = RewTerm(func=mdp.object_height_tracking, params={"target_height": 0.15, "minimal_height": 0.04, "std": 0.3}, weight = 16.0)
-
-    """object_goal_tracking = RewTerm(
-        func=mdp.object_goal_distance,
-        params={"std": 0.3, "minimal_height": 0.04, "command_name": "object_pose"},
-        weight=16.0,
-    )"""
-
-    """object_goal_tracking_fine_grained = RewTerm(
-        func=mdp.object_goal_distance,
-        params={"std": 0.05, "minimal_height": 0.04, "command_name": "object_pose"},
-        weight=5.0,
-    )"""
 
     # action penalty
     action_rate = RewTerm(func=mdp.action_rate_l2, weight=-1e-4)

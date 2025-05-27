@@ -51,7 +51,7 @@ class Shared(GaussianMixin, DeterministicMixin, Model):
             nn.ELU(),
         )
             
-        """self.cnn2 = nn.Sequential(               
+        self.cnn2 = nn.Sequential(               
             nn.Conv2d(4, 32, kernel_size=3, stride=2),
             #nn.BatchNorm2d(64),
             nn.ReLU(),
@@ -72,9 +72,9 @@ class Shared(GaussianMixin, DeterministicMixin, Model):
             nn.ELU(),
             nn.Linear(64, 32),
             nn.ELU(),
-                                                )"""
+                                                )
 
-        self.net = nn.Sequential(nn.Linear(32+18, 256),
+        self.net = nn.Sequential(nn.Linear(64+25, 256),
                                  nn.ELU(),
                                  nn.Linear(256, 128),
                                  nn.ELU(),
@@ -97,31 +97,22 @@ class Shared(GaussianMixin, DeterministicMixin, Model):
         #print(env.observation_space)
         observations = self.tensor_to_space(inputs["states"], self.observation_space)
 
-        #depth_img = observations["depth_img"].permute(0, 3, 1, 2)
-        #depth_features = self.cnn(depth_img)
-
         rgb_img = observations["rgb_img"].permute(0, 3, 1, 2)   # Shape: [B, 3, H, W]
-        #rgb_img2 = observations["rgb_img2"].permute(0, 3, 1, 2)   # Shape: [B, 3, H, W]
+        rgb_img2 = observations["rgb_img2"].permute(0, 3, 1, 2)   # Shape: [B, 3, H, W]
         depth_img = observations["depth_img"].permute(0, 3, 1, 2) # Shape: [B, 1, H, W]
-        #depth_img2 = observations["depth_img2"].permute(0, 3, 1, 2) # Shape: [B, 1, H, W]
+        depth_img2 = observations["depth_img2"].permute(0, 3, 1, 2) # Shape: [B, 1, H, W]
         combined_img = torch.cat([rgb_img, depth_img], dim=1)     # Shape: [B, 4, H, W]
-        #combined_img2 = torch.cat([rgb_img2, depth_img2], dim=1)     # Shape: [B, 4, H, W]
-        #combined_img = torch.cat([depth_img, depth_img2], dim=1)     # Shape: [B, 4, H, W]
-        depth_features = self.cnn(combined_img)
-        #depth_features2 = self.cnn2(combined_img2)
-        #depth_features = self.cnn(depth_img)
-        #depth_features_comb = torch.cat([depth_features, depth_features2], dim=1)
+        combined_img2 = torch.cat([rgb_img2, depth_img2], dim=1)     # Shape: [B, 4, H, W]
 
-        non_image_obs = [v.view(v.size(0), -1) for k, v in observations.items() if k not in ['depth_img', 'rgb_img']]
+        depth_features = self.cnn(combined_img)
+        depth_features2 = self.cnn2(combined_img2)
+
+        depth_features_comb = torch.cat([depth_features, depth_features2], dim=1)
+
+        non_image_obs = [v.view(v.size(0), -1) for k, v in observations.items() if k not in ['depth_img', 'depth_img2', 'rgb_img', 'rgb_img2']]
         non_image_obs = torch.cat(non_image_obs, dim=1)
 
-        #non_image_obs = [v.view(v.size(0), -1) for k, v in observations.items() if k != 'depth_img']
-        #non_image_obs = torch.cat(non_image_obs, dim=1)
-
-        #print(non_image_obs)
-
-        combined_features = torch.cat([depth_features, non_image_obs], dim=1)
-        #print("combined features size: ", combined_features.shape)
+        combined_features = torch.cat([depth_features_comb, non_image_obs], dim=1)
 
         shared_output = self.net(combined_features)
 
@@ -157,7 +148,7 @@ models["value"] = models["policy"]  # same instance: shared model
 # https://skrl.readthedocs.io/en/latest/api/agents/ppo.html#configuration-and-hyperparameters
 cfg = PPO_DEFAULT_CONFIG.copy()
 cfg["rollouts"] = 96  # memory_size
-cfg["learning_epochs"] = 18
+cfg["learning_epochs"] = 10
 cfg["mini_batches"] = 4  # 96 * 4096 / 98304
 cfg["discount_factor"] = 0.99
 cfg["lambda"] = 0.95
@@ -170,7 +161,7 @@ cfg["grad_norm_clip"] = 1.0
 cfg["ratio_clip"] = 0.2
 cfg["value_clip"] = 0.2
 cfg["clip_predicted_values"] = True
-cfg["entropy_loss_scale"] = 0.01 #0.01
+cfg["entropy_loss_scale"] = 0.05 #0.01
 cfg["value_loss_scale"] = 1.0
 cfg["kl_threshold"] = 0
 cfg["rewards_shaper"] = None
@@ -182,13 +173,13 @@ cfg["value_preprocessor_kwargs"] = {"size": 1, "device": device}
 # logging to TensorBoard and write checkpoints (in timesteps)
 cfg["experiment"]["write_interval"] = 336
 cfg["experiment"]["checkpoint_interval"] = 2000
-cfg["experiment"]["directory"] = "p6/runs/Isaac-Lift-Franka-v0"
-cfg["experiment"]["wandb"] = True                   #aktivere wandb
+cfg["experiment"]["directory"] = "runs/Isaac-Rock-Grasp-v0"
+cfg["experiment"]["wandb"] = False                   #aktivere wandb
 cfg["experiment"]["wandb_kwargs"] ={                #Ting der bliver givet til wandb init, meget smart gutter
-    "entity": "urkanin-aalborg-universitet",        #Hvilken konto/teams det skal gemmes på, det her er vores fælles
-    "project": "P6",                                #Hvilket projekt inde på teams det skal gemmes på
-    "group": "Grasp-CNN-test",                     #Man kan gruppere sine runs, smart hvis man tester forksellige ting af, og skal have et samlet overblik over netop dem
-    "job_type": "train"                             #Synes vi skal have den her til train/eval, så kan man nemt skelne
+    "entity": "fyld selv ud",        #Hvilken konto/teams det skal gemmes på, det her er vores fælles
+    "project": "fyld selv ud",                                #Hvilket projekt inde på teams det skal gemmes på
+    "group": "fyld selv ud",                     #Man kan gruppere sine runs, smart hvis man tester forksellige ting af, og skal have et samlet overblik over netop dem
+    "job_type": "fyld selv ud"                             #Synes vi skal have den her til train/eval, så kan man nemt skelne
 } 
 
 agent = PPO(models=models,
@@ -212,7 +203,7 @@ trainer.train()
 # # uncomment the following lines to evaluate a trained agent
 # # ---------------------------------------------------------
 
-#path = "p6/runs/Isaac-Lift-Franka-v0/25-05-21_10-51-30-716918_PPO/checkpoints/best_agent.pt"
+#path = "" #insert path to your run :)
 #agent.load(path)
 
 # # start evaluation
