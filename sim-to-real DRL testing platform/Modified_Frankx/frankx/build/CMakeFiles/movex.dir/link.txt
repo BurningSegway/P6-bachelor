@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -shared -Wl,-soname,libmovex.so -o libmovex.so CMakeFiles/movex.dir/src/movex/path.cpp.o  -Wl,-rpath,/home/morten/frankx/build/affx:/home/morten/frankx/build/ruckig affx/libaffx.so ruckig/libruckig.so 

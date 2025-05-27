@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -O3 -DNDEBUG -flto -shared  -o ../../_movex.cpython-310-x86_64-linux-gnu.so CMakeFiles/_movex.dir/src/movex/python.cpp.o  -Wl,-rpath,"\$ORIGIN" libmovex.a affx/libaffx.a ruckig/libruckig.a 

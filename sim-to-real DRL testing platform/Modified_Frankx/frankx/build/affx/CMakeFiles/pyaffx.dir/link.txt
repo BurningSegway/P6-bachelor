@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -flto -shared  -o pyaffx.cpython-310-x86_64-linux-gnu.so CMakeFiles/pyaffx.dir/src/python.cpp.o  -Wl,-rpath,/home/morten/frankx/build/affx libaffx.so 

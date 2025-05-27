@@ -1,0 +1,11 @@
+LICENSE
+README.md
+setup.py
+frankx/__init__.py
+frankx/gripper.py
+frankx/robot.py
+frankx.egg-info/PKG-INFO
+frankx.egg-info/SOURCES.txt
+frankx.egg-info/dependency_links.txt
+frankx.egg-info/not-zip-safe
+frankx.egg-info/top_level.txt

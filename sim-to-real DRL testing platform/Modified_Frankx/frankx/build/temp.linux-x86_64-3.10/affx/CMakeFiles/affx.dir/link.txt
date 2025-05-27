@@ -1,0 +1,2 @@
+/usr/bin/ar qc libaffx.a CMakeFiles/affx.dir/src/affine.cpp.o
+/usr/bin/ranlib libaffx.a

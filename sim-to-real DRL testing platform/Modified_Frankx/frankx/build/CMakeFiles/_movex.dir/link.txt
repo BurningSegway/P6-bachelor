@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -flto -shared  -o _movex.cpython-310-x86_64-linux-gnu.so CMakeFiles/_movex.dir/src/movex/python.cpp.o  -Wl,-rpath,/home/morten/frankx/build:/home/morten/frankx/build/affx:/home/morten/frankx/build/ruckig libmovex.so affx/libaffx.so ruckig/libruckig.so 

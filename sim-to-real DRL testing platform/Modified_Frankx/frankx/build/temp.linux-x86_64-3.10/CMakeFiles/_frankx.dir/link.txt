@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -O3 -DNDEBUG -flto -shared  -o ../../_frankx.cpython-310-x86_64-linux-gnu.so CMakeFiles/_frankx.dir/src/frankx/python.cpp.o  -Wl,-rpath,"\$ORIGIN" libfrankx.a /usr/lib/libfranka.so.0.9.0 libmovex.a affx/libaffx.a ruckig/libruckig.a 

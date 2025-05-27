@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmovex.a CMakeFiles/movex.dir/src/movex/path.cpp.o
+/usr/bin/ranlib libmovex.a

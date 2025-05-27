@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/example-6_stop.dir/examples/6_stop.cpp.o -o example-6_stop  -Wl,-rpath,/home/morten/frankx/build/ruckig libruckig.so 

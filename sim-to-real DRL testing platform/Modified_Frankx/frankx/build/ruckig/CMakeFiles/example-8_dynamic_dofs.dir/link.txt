@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/example-8_dynamic_dofs.dir/examples/8_dynamic_dofs.cpp.o -o example-8_dynamic_dofs  -Wl,-rpath,/home/morten/frankx/build/ruckig libruckig.so 

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/example-7_minimum_duration.dir/examples/7_minimum_duration.cpp.o -o example-7_minimum_duration  -Wl,-rpath,/home/morten/frankx/build/ruckig libruckig.so 

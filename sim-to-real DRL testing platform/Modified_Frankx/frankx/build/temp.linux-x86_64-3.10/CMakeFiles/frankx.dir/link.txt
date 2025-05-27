@@ -1,0 +1,2 @@
+/usr/bin/ar qc libfrankx.a CMakeFiles/frankx.dir/src/frankx/gripper.cpp.o CMakeFiles/frankx.dir/src/frankx/kinematics.cpp.o CMakeFiles/frankx.dir/src/frankx/robot.cpp.o
+/usr/bin/ranlib libfrankx.a

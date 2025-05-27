@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/otg-test.dir/test/otg-test.cpp.o -o otg-test  -Wl,-rpath,/home/morten/frankx/build/ruckig libruckig.so 

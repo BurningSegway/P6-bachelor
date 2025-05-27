@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -O3 -DNDEBUG -flto -shared  -o ../../../ruckig.cpython-310-x86_64-linux-gnu.so CMakeFiles/python_ruckig.dir/src/python.cpp.o  -Wl,-rpath,"\$ORIGIN" libruckig.a 

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/linear.dir/examples/linear.cpp.o -o linear  -Wl,-rpath,/home/morten/frankx/build:/home/morten/frankx/build/affx:/home/morten/frankx/build/ruckig libfrankx.so /usr/lib/libfranka.so.0.9.0 libmovex.so affx/libaffx.so ruckig/libruckig.so /usr/lib/x86_64-linux-gnu/libpython3.10.so 
